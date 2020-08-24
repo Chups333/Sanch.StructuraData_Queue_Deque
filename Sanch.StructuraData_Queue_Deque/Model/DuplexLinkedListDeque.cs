@@ -1,0 +1,109 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Sanch.StructuraData_Queue_Deque.Model
+{
+    public class DuplexLinkedListDeque<T>
+    {
+        private DuplexItem<T> head;
+        private DuplexItem<T> tail;
+        public int Count { get; private set; }
+
+        public DuplexLinkedListDeque()
+        {
+
+        }
+        public DuplexLinkedListDeque(T data)
+        {
+            //проверка
+            SetHeadAndTailItem(data);
+        }
+
+        private void SetHeadAndTailItem(T data)
+        {
+            var item = new DuplexItem<T>(data);
+            head = item;
+            tail = item;
+            Count = 1;
+        }
+
+        public void PushBack(T data)
+        {
+            if (Count == 0)
+            {
+                SetHeadAndTailItem(data);
+                return;
+            }
+
+            var item = new DuplexItem<T>(data)
+            {
+                Next = tail
+            };
+            tail.Previous = item;
+            tail = item;
+            Count++;
+
+        }
+        public void PushFront(T data)
+        {
+            if (Count == 0)
+            {
+                SetHeadAndTailItem(data);
+                return;
+            }
+
+            var item = new DuplexItem<T>(data)
+            {
+                Previous = head
+            };
+            head.Next = item;
+            head = item;
+            Count++;
+        }
+        public T PopBack()
+        {
+            if (Count > 0)
+            {
+                var result = tail.Data;
+                var current = tail.Next;
+                current.Previous = null;
+                tail = current;
+                Count--;
+                return result;
+            }
+            else
+            {
+                return default(T);
+            }
+        }
+        public T PopFront()
+        {
+            if (Count > 0)
+            {
+                var result = head.Data;
+                var current = head.Previous;
+                current.Next = null;
+                head = current;
+                Count--;
+                return result;
+            }
+            else
+            {
+                return default(T);
+            }
+        }
+
+        public T PeekBack()
+        {
+            return tail.Data;
+        }
+        public T PeekFront()
+        {
+            return head.Data;
+        }
+    }
+}
+
